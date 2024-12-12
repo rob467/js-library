@@ -1,0 +1,12 @@
+.book-display {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.dialog-wrapper {
+    max-width: 300px;
+}
+
+#add-book-dialog {
+    max-width: 300px;
+}

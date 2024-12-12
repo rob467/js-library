@@ -1,7 +1,10 @@
 const bookDisplay = document.querySelector(".book-display")
-
+const addBookButton = document.querySelector("#add-book-btn")
+const addBookDialog = document.querySelector("#add-book-dialog")
+const closeDialogBtn = addBookDialog.querySelector("#close-dialog-btn")
 
 const myLibrary = [];
+
 
 function Book(title, author, pages, read) {
     this.title = title;
@@ -20,17 +23,36 @@ addBookToLibrary('Game of Thrones', 'G.R.R. Martin', 694, read=false)
 
 function displayLibrary() {
     if (!myLibrary) {
-        alert('Nothing to see hear!')
         return
     }
     for (const book of myLibrary) {
         const bookDiv = document.createElement("div")
         bookDiv.classList.add("book-card");
-        bookDiv.textContent = `${book.title}`
-        bookDisplay.appendChild("bookDiv")
+
+        const bookTitle = document.createElement("h3")
+        bookTitle.textContent = `${book.title}`
+
+        const bookAuthor = document.createElement("h4")
+        bookAuthor.textContent = `by ${book.author}`
+
+        const bookPages = document.createElement("h4")
+        bookPages.textContent = `${book.pages} pages`
+
+        const readStatusElement = document.createElement("h4")
+        readStatusElement.textContent = `Status: ${book.read ? "Read" : "Not Read"}`;
+
+
+        bookDiv.append(bookTitle, bookAuthor, bookPages, readStatusElement)
+
+        bookDisplay.appendChild(bookDiv)
     }
 }
 
+addBookButton.addEventListener("click", () => {addBookDialog.showModal()})
 
+closeDialogBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    addBookDialog.close()
+})
 
 displayLibrary()
