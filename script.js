@@ -1,7 +1,14 @@
 const bookDisplay = document.querySelector(".book-display")
 const addBookButton = document.querySelector("#add-book-btn")
 const addBookDialog = document.querySelector("#add-book-dialog")
+
+const addBookForm = addBookDialog.querySelector("#add-book-form")
 const closeDialogBtn = addBookDialog.querySelector("#close-dialog-btn")
+const confirmAddBookBtn = addBookDialog.querySelector("#confirm-btn")
+
+const dialogTitle = addBookDialog.querySelector("#book-title")
+const dialogAuthor = addBookDialog.querySelector("#author")
+const dialogPages = addBookDialog.querySelector("#pages")
 
 const myLibrary = [];
 
@@ -19,11 +26,14 @@ function addBookToLibrary(title, author, pages, read) {
 
 addBookToLibrary('The Hobbit', 'J.R.R. Tolkien', 293, read=false)
 addBookToLibrary('Harry Potter', 'J.K. Rowling', 220, read=false)
-addBookToLibrary('Game of Thrones', 'G.R.R. Martin', 694, read=false)
+// addBookToLibrary('Game of Thrones', 'G.R.R. Martin', 694, read=false)
 
 function displayLibrary() {
     if (!myLibrary) {
         return
+    }
+    while (bookDisplay.firstChild) {
+        bookDisplay.removeChild(bookDisplay.firstChild)
     }
     for (const book of myLibrary) {
         const bookDiv = document.createElement("div")
@@ -41,8 +51,13 @@ function displayLibrary() {
         const readStatusElement = document.createElement("h4")
         readStatusElement.textContent = `Status: ${book.read ? "Read" : "Not Read"}`;
 
+        const changeReadStatus = document.createElement("button")
+        changeReadStatus.textContent = `${book.read ? "Not Read": "Read"}`
+        changeReadStatus.addEventListener("click", () => {
+            book.read ? book.read = false : book.read = true
+        })
 
-        bookDiv.append(bookTitle, bookAuthor, bookPages, readStatusElement)
+        bookDiv.append(bookTitle, bookAuthor, bookPages, readStatusElement, changeReadStatus)
 
         bookDisplay.appendChild(bookDiv)
     }
@@ -55,4 +70,28 @@ closeDialogBtn.addEventListener("click", (e) => {
     addBookDialog.close()
 })
 
+
 displayLibrary()
+
+
+confirmAddBookBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    if (!addBookForm.checkValidity()) {
+        addBookForm.reportValidity();
+        return;
+    }
+
+    const dialogReadStatus = addBookDialog.querySelector("input[name=read-status]:checked").value
+
+
+    addBookToLibrary(dialogTitle.value, dialogAuthor.value,
+        dialogPages.value, dialogReadStatus === "read")
+    console.log(myLibrary)
+    displayLibrary()
+
+    addBookDialog.close()
+    
+    addBookForm.reset()
+})
+

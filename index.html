@@ -11,7 +11,7 @@
         <button id="add-book-btn">Add Book</button>
         <div class="dialog-wrapper">
             <dialog id="add-book-dialog">
-                <form>
+                <form id="add-book-form">
                     <div>
                         <label for="book-title">Title:</label>
                         <input type="text" id="book-title" name="book-title" required>
@@ -27,12 +27,12 @@
                     <div>
                         <input type="radio" id="read" name="read-status" value="read">
                         <label for="read">Read</label>
-                        <input type="radio" id="not-read" name="read-status" value="not-read">
+                        <input type="radio" id="not-read" name="read-status" value="not-read" checked>
                         <label for="not-read">Not Read</label>
                     </div>
                     <div class="submit-btns">
                         <input type="submit" value="Cancel" id="close-dialog-btn">
-                        <button id="confirm-btn" value="default">Confirm</button>
+                        <button id="confirm-btn" value="default" type="submit">Confirm</button>
                     </div>
                 </form>
             </dialog>
