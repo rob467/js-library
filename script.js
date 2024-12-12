@@ -37,6 +37,7 @@ function displayLibrary() {
     }
     for (const book of myLibrary) {
         const bookDiv = document.createElement("div")
+        bookDiv.setAttribute("id", `${book.title.replace(/\s+/g, "-").toLowerCase()}`)
         bookDiv.classList.add("book-card");
 
         const bookTitle = document.createElement("h3")
@@ -51,13 +52,23 @@ function displayLibrary() {
         const readStatusElement = document.createElement("h4")
         readStatusElement.textContent = `Status: ${book.read ? "Read" : "Not Read"}`;
 
-        const changeReadStatus = document.createElement("button")
-        changeReadStatus.textContent = `${book.read ? "Not Read": "Read"}`
-        changeReadStatus.addEventListener("click", () => {
+        const btnsDiv = document.createElement("div")
+        const toggleReadStatusBtn = document.createElement("button")
+        toggleReadStatusBtn.textContent = `${book.read ? "Not Read": "Read"}`
+        toggleReadStatusBtn.addEventListener("click", () => {
             book.read ? book.read = false : book.read = true
+            displayLibrary(bookDiv)
         })
 
-        bookDiv.append(bookTitle, bookAuthor, bookPages, readStatusElement, changeReadStatus)
+        const deleteBookBtn = document.createElement("button")
+        deleteBookBtn.textContent = "Delete"
+        deleteBookBtn.addEventListener("click", () =>
+            deleteBook(bookDiv.id))
+
+        btnsDiv.append(toggleReadStatusBtn, deleteBookBtn)
+
+
+        bookDiv.append(bookTitle, bookAuthor, bookPages, readStatusElement, btnsDiv)
 
         bookDisplay.appendChild(bookDiv)
     }
@@ -87,7 +98,6 @@ confirmAddBookBtn.addEventListener("click", (e) => {
 
     addBookToLibrary(dialogTitle.value, dialogAuthor.value,
         dialogPages.value, dialogReadStatus === "read")
-    console.log(myLibrary)
     displayLibrary()
 
     addBookDialog.close()
@@ -95,3 +105,12 @@ confirmAddBookBtn.addEventListener("click", (e) => {
     addBookForm.reset()
 })
 
+function deleteBook(bookId) {
+    for (const book of myLibrary){
+        if (bookId === book.title.replace(/\s+/g, "-").toLowerCase()){
+            let bookIndex = myLibrary.indexOf(book)
+            myLibrary.splice(bookIndex, 1)
+        }
+        displayLibrary()
+        }
+}
