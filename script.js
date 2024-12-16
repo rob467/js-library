@@ -25,8 +25,16 @@ function addBookToLibrary(title, author, pages, read) {
 }
 
 addBookToLibrary('The Hobbit', 'J.R.R. Tolkien', 293, read=false)
-addBookToLibrary('Harry Potter', 'J.K. Rowling', 220, read=false)
-// addBookToLibrary('Game of Thrones', 'G.R.R. Martin', 694, read=false)
+addBookToLibrary('Harry Potter and the Philospher\'s Stone', 'J.K. Rowling', 220, read=false)
+addBookToLibrary('Game of Thrones', 'G.R.R. Martin', 694, read=false)
+
+function truncateText(string, strLimit) {
+    if (string.length > strLimit) {
+        return string.substring(0, strLimit) + "..."
+    } else {
+        return string
+    }
+}
 
 function displayLibrary() {
     if (!myLibrary) {
@@ -35,29 +43,31 @@ function displayLibrary() {
     while (bookDisplay.firstChild) {
         bookDisplay.removeChild(bookDisplay.firstChild)
     }
+
     for (const book of myLibrary) {
         const bookDiv = document.createElement("div")
-        bookDiv.setAttribute("id", `${book.title.replace(/\s+/g, "-").toLowerCase()}`)
+        bookDiv.setAttribute("id", `${myLibrary.indexOf(book) + 1}`)
         bookDiv.classList.add("book-card");
 
         const bookTitle = document.createElement("h3")
-        bookTitle.textContent = `${book.title}`
+        bookTitle.textContent = truncateText(book.title, 39)
 
         const bookAuthor = document.createElement("h4")
-        bookAuthor.textContent = `by ${book.author}`
+        bookAuthor.textContent = `by ${truncateText(book.author, 15)}`
 
-        const bookPages = document.createElement("h4")
+        const bookPages = document.createElement("h5")
         bookPages.textContent = `${book.pages} pages`
 
-        const readStatusElement = document.createElement("h4")
+        const readStatusElement = document.createElement("h5")
         readStatusElement.textContent = `Status: ${book.read ? "Read" : "Not Read"}`;
 
         const btnsDiv = document.createElement("div")
+        btnsDiv.classList.add("card-btns");
         const toggleReadStatusBtn = document.createElement("button")
         toggleReadStatusBtn.textContent = `${book.read ? "Not Read": "Read"}`
         toggleReadStatusBtn.addEventListener("click", () => {
-            book.read ? book.read = false : book.read = true
-            displayLibrary(bookDiv)
+            book.read = !book.read;
+            displayLibrary()
         })
 
         const deleteBookBtn = document.createElement("button")
@@ -106,11 +116,9 @@ confirmAddBookBtn.addEventListener("click", (e) => {
 })
 
 function deleteBook(bookId) {
-    for (const book of myLibrary){
-        if (bookId === book.title.replace(/\s+/g, "-").toLowerCase()){
-            let bookIndex = myLibrary.indexOf(book)
-            myLibrary.splice(bookIndex, 1)
-        }
-        displayLibrary()
-        }
+    const index = parseInt(bookId) - 1
+    if (index > -1 && index < myLibrary.length) {
+        myLibrary.splice((index), 1)
+    }
+    displayLibrary()
 }
