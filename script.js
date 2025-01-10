@@ -13,17 +13,22 @@ const dialogPages = addBookDialog.querySelector("#pages")
 const myLibrary = [];
 
 
-function Book(title, author, pages, read) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
+class Book {
+
+    constructor(title, author, pages, read) {
+        this.title = title
+        this.author = author
+        this.pages = pages
+        this.read = read
+    }
 }
+
 function addBookToLibrary(title, author, pages, read) {
     let newBook = new Book(title, author, pages, read)
     myLibrary.push(newBook)
 }
 
+// Default books to show examples
 addBookToLibrary('The Hobbit', 'J.R.R. Tolkien', 293, read=false)
 addBookToLibrary('Harry Potter and the Philospher\'s Stone', 'J.K. Rowling', 220, read=false)
 addBookToLibrary('Game of Thrones', 'G.R.R. Martin', 694, read=false)
